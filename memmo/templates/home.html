@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <section>
+    <h2>Welcome to the anonymous message sharing project</h2>
+    <p>
+      No registration or personal data. No IP logs and no need to install or save anything locally.
+      You leave an anonymous text, get a unique address to it, and share it with anyone in any way you like.
+      We open the era of truly anonymous communication.
+    </p>
+    <p><strong>Write a message, click Submit, get a unique link, and share it any way you want.</strong></p>
+  </section>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+
+    <!-- Визуальный контейнер нумерации + textarea -->
+    <div class="editor-wrap">
+      <div id="line-gutter" aria-hidden="true">1</div>
+      {{ form.text }}
+    </div>
+
+    <button type="submit">Submit</button>
+    {% if error %}<p style="color:#b00">{{ error }}</p>{% endif %}
+  </form>
+
+  <style>
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+    .editor-wrap {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      overflow: hidden;
+      max-width: 100%;
+    }
+    #line-gutter {
+      min-width: 3.5rem;
+      padding: .75rem .5rem;
+      text-align: right;
+      background: #f6f8fa;
+      color: #6e7781;
+      border-right: 1px solid #e5e7eb;
+      white-space: pre;              /* важнo: переносов нет, каждая строка отдельно */
+      line-height: 1.5;              /* синхронизированно с textarea */
+      user-select: none;
+    }
+    #memo-text {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      resize: vertical;
+      padding: .75rem;
+      line-height: 1.5;              /* совпадает с gutter */
+      tab-size: 4;
+      background: white;
+    }
+    /* синхронизация прокрутки */
+    #memo-text, #line-gutter {
+      max-height: 60vh;
+      overflow: auto;
+    }
+  </style>
+
+  <script>
+    (function() {
+      const ta = document.getElementById('memo-text');
+      const gutter = document.getElementById('line-gutter');
+
+      function countLines(value) {
+        // всегда минимум 1 строка; учитываем последнюю пустую после \n
+        const lines = value.length ? value.split(/\n/).length : 1;
+        return lines;
+      }
+
+      function renderGutter(lines) {
+        // формируем "1\n2\n3\n..."
+        let out = '';
+        for (let i = 1; i <= lines; i++) out += i + (i < lines ? '\n' : '');
+        gutter.textContent = out || '1';
+      }
+
+      function update() {
+        renderGutter(countLines(ta.value));
+      }
+
+      function syncScroll() {
+        gutter.scrollTop = ta.scrollTop;
+      }
+
+      // первичный рендер
+      update();
+      // события
+      ta.addEventListener('input', update);
+      ta.addEventListener('keyup', update);
+      ta.addEventListener('change', update);
+      ta.addEventListener('scroll', syncScroll);
+      // адаптация высоты для «приятного» старта
+      window.addEventListener('load', update);
+      window.addEventListener('resize', update);
+    })();
+  </script>
+
+{% endblock %}

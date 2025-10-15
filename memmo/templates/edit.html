@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Edit record (ID: {{ memo.id }})</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+    <a href="/{{ memo.id }}/r"><button type="button">Cancel</button></a>
+  </form>
+{% endblock %}

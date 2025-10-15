@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+  <article>
+    <h2>Congratulations, your record is saved!</h2>
+    <p>To read it, go to: <code class="mono">{{ read_url }}</code></p>
+    <img class="qr" alt="QR" width="256" height="256"
+         src="data:image/png;base64,{{ qr_b64 }}">
+    <p class="muted">This text can be edited with the link preserved (use <code>&update</code>), or a new link can be generated.</p>
+
+    <p>
+      <a href="{{ read_url }}"><button>Read</button></a>
+      <a href="/"><button>Return to main page</button></a>
+    </p>
+
+    <details>
+      <summary>Advanced</summary>
+      <ul>
+        <li>Edit in-place: <code>{{ read_url }}?update</code></li>
+        <li>Delete: <code>{{ read_url }}?kill</code></li>
+        <li>Fork with a new link: <a href="/{{ memo.id }}/fork">/{{ memo.id }}/fork</a></li>
+      </ul>
+      <p class="muted">Version: {{ memo.version }} | SHA256(text): {{ memo.content_hash }}</p>
+    </details>
+  </article>
+{% endblock %}

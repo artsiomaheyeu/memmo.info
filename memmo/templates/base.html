@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>memmo.info</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://unpkg.com/mvp.css" rel="stylesheet">
+  <style>
+    .qr { image-rendering: pixelated; }
+    .muted { color:#666; font-size:0.95em; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .wrap { white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><a href="/">memmo.info</a></h1>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <footer>
+    <p class="muted">© demyan / memmo.info</p>
+  </footer>
+</body>
+</html>

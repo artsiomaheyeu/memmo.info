@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+  {% if deleted %}
+    <h2>Record deleted</h2>
+    <p class="muted">This memmo was just deleted.</p>
+    <p><a href="/"><button>Return to main page</button></a></p>
+  {% elif gone %}
+    <h2>Record not available (deleted)</h2>
+    <p class="muted">HTTP 410 Gone</p>
+    <p><a href="/"><button>Return to main page</button></a></p>
+  {% else %}
+    <h2>Record</h2>
+    <pre class="wrap mono">{{ memo.text }}</pre>
+    <p>
+      <a href="?update"><button>Edit (preserve link)</button></a>
+      <a href="?kill" onclick="return confirm('Delete this record?');"><button>Delete</button></a>
+      <a href="/"><button>Return to main page</button></a>
+    </p>
+  {% endif %}
+{% endblock %}
